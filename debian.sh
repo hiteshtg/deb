@@ -1,15 +1,15 @@
 #! /bin/bash
 
-snap list
+sudo snap list
 
-snap remove --purge lxd 2>/dev/null || true
-snap remove --purge core24 2>/dev/null || true
-snap remove --purge snapd 2>/dev/null || true
+sudo snap remove --purge lxd 2>/dev/null || true
+sudo snap remove --purge core24 2>/dev/null || true
+sudo snap remove --purge snapd 2>/dev/null || true
 
-apt purge snapd
-apt autoremove --purge
+sudo apt purge snapd
+sudo apt autoremove --purge
 
-tee /etc/apt/preferences.d/no-snapd >/dev/null <<'EOF'
+sudo tee /etc/apt/preferences.d/no-snapd >/dev/null <<'EOF'
 Package: snapd
 Pin: release *
 Pin-Priority: -1
@@ -17,21 +17,23 @@ EOF
 
 sudo apt update
 
-apt install curl gpg
+sudo apt install curl gpg
 
-add-apt-repository ppa:avengemedia/danklinux
-add-apt-repository ppa:avengemedia/dms
+sudo add-apt-repository ppa:avengemedia/danklinux
+sudo add-apt-repository ppa:avengemedia/dms
 
-apt update
-apt install niri dms libwayland-server0 thunar alacritty thunar gvfs kdeconnect emacs power-profiles-daemon pipewire wireplumber lxpolkit wl-clipboard xdg-desktop-portal-gtk brightnessctl playerctl upower
+sudo apt update
+sudo apt install niri dms libwayland-server0 thunar alacritty thunar gvfs kdeconnect emacs power-profiles-daemon pipewire wireplumber lxpolkit wl-clipboard xdg-desktop-portal-gtk brightnessctl playerctl upower
 
-systemctl --user set-environment DMS_PREFERRED_BATTERY="/org/freedesktop/UPower/devices/battery_BAT1"
+sudo systemctl --user set-environment DMS_PREFERRED_BATTERY="/org/freedesktop/UPower/devices/battery_BAT1"
 
-apt install flatpak
+suod apt install flatpak
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 flatpak install flathub net.waterfox.waterfox
 flatpak install flathub org.keepassxc.KeePassXC
+
+mkdir -p .config/environment.d/
 
 echo "XDG_DATA_DIRS=$HOME/.local/share/flatpak/export/share:/var/lib/flatpak/exports/share:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}" > .config/environment.d/flatpak.conf
 
