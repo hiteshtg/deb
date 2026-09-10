@@ -17,8 +17,8 @@ curl -fsSL https://download.opensuse.org/repositories/home:/AvengeMedia:/dms/Deb
 echo "deb [signed-by=/etc/apt/keyrings/avengemedia-dms.gpg] https://download.opensuse.org/repositories/home:/AvengeMedia:/dms/Debian_13/ /" | \
   tee /etc/apt/sources.list.d/avengemedia-dms.list
 
-sudo apt update
-sudo apt install niri dms libwayland-server0 thunar alacritty thunar gvfs kdeconnect emacs power-profiles-daemon pipewire wireplumber lxpolkit wl-clipboard xdg-desktop-portal-gtk brightnessctl playerctl upower
+apt update
+apt install niri dms libwayland-server0 thunar alacritty thunar gvfs kdeconnect emacs power-profiles-daemon pipewire wireplumber lxpolkit wl-clipboard xdg-desktop-portal-gtk brightnessctl playerctl upower
 
 systemctl --user set-environment DMS_PREFERRED_BATTERY="/org/freedesktop/UPower/devices/battery_BAT1"
 
