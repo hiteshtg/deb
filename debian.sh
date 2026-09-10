@@ -1,21 +1,26 @@
 #! /bin/bash
 
+snap list
+
+snap remove --purge lxd 2>/dev/null || true
+snap remove --purge core24 2>/dev/null || true
+snap remove --purge snapd 2>/dev/null || true
+
+apt purge snapd
+apt autoremove --purge
+
+tee /etc/apt/preferences.d/no-snapd >/dev/null <<'EOF'
+Package: snapd
+Pin: release *
+Pin-Priority: -1
+EOF
+
+sudo apt update
+
 apt install curl gpg
 
-echo "deb http://deb.debian.org/debian trixie-backports main" | \
-  tee /etc/apt/sources.list.d/trixie-backports.list
-apt update
-apt install -t trixie-backports quickshell
-
-curl -fsSL https://download.opensuse.org/repositories/home:AvengeMedia:danklinux/Debian_13/Release.key | \
-  gpg --dearmor -o /etc/apt/keyrings/danklinux.gpg
-echo "deb [signed-by=/etc/apt/keyrings/danklinux.gpg] https://download.opensuse.org/repositories/home:/AvengeMedia:/danklinux/Debian_13/ /" | \
-  tee /etc/apt/sources.list.d/danklinux.list
-
-curl -fsSL https://download.opensuse.org/repositories/home:/AvengeMedia:/dms/Debian_13/Release.key | \
-  gpg --dearmor -o /etc/apt/keyrings/avengemedia-dms.gpg
-echo "deb [signed-by=/etc/apt/keyrings/avengemedia-dms.gpg] https://download.opensuse.org/repositories/home:/AvengeMedia:/dms/Debian_13/ /" | \
-  tee /etc/apt/sources.list.d/avengemedia-dms.list
+add-apt-repository ppa:avengemedia/danklinux
+add-apt-repository ppa:avengemedia/dms
 
 apt update
 apt install niri dms libwayland-server0 thunar alacritty thunar gvfs kdeconnect emacs power-profiles-daemon pipewire wireplumber lxpolkit wl-clipboard xdg-desktop-portal-gtk brightnessctl playerctl upower
